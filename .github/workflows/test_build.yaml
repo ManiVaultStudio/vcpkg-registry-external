@@ -1,0 +1,59 @@
+name: Custom vcpkg registry tester
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  VCPKG_COMMIT_SHA: 56bb2411609227288b70117ead2c47585ba07713
+
+jobs:
+  cross-platform-test-build:
+    name: Cross platform test build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - name: Windows-msvc2022
+            os: windows-2022
+            compiler: msvc-2022
+            build-cversion: 17
+            build-runtime: MD
+            build-config: Release
+            build-arch: x86_64
+
+    steps:
+      - name: Set vcpkg environmentg (Windows)
+        if: startsWith(runner.os, 'Windows')
+        shell: pwsh
+        run: |
+          echo "VCPKG_DIR=${{ runner.temp }}/vcpkg" >> $env:GITHUB_ENV
+          echo "VCPKG_ROOT=${{ runner.temp }}/vcpkg" >> $env:GITHUB_ENV
+          echo "VCPKG_BINARY_SOURCES=clear;files,${{ runner.temp }}/vcpkg-cache,readwrite" >> $env:GITHUB_ENV
+
+      - name: Set up binary cache
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-cache-${{ runner.os }}-${{ matrix.os }}-${{ matrix.build-cversion }}-${{ env.VCPKG_COMMIT_SHA }}-${{ hashFiles('**/vcpkg.json', '**/vcpkg-overlays/**') }}
+          restore-keys: |
+            vcpkg-cache-${{ runner.os }}-${{ matrix.os }}-${{ matrix.build-cversion }}-${{ env.VCPKG_COMMIT_SHA }}
+  
+      - name: Clone and checkout vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git --branch master ${{ env.VCPKG_DIR }}
+          git -C ${{ env.VCPKG_DIR }} checkout ${{ env.VCPKG_COMMIT_SHA }}
+
+      - name: Install vcpkg
+        run: ./vcpkg/bootstrap-vcpkg.sh
+
+      - name: Configure tester project   # this drives the port build
+        run: |
+          cmake --preset default \
+            -S test/registry-tester \
+            -B test/registry-tester/build
+
+      - name: Build tester
+        run: cmake --build test/registry-tester/build

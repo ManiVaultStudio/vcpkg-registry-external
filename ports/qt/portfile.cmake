@@ -34,9 +34,29 @@ set(MSVC_TOOLSET_MAP [=[
 }
 ]=])
 
+set(OS_MAP [=[
+{
+    "Linux": "linux", 
+    "Windows": "windows", 
+    "Macos": "mac", 
+    "iOS": "mac"  
+}
+]=])
+
+function(get_platform)
+  # Set the PLATFORM_NAME in the calling scope
+  if (VCPKG_TARGET_IS_WINDOWS)
+    set(PLATFORM_NAME "windows" PARENT_SCOPE)
+  elseif (VCPKG_TARGET_IS_LINUX)
+    set(PLATFORM_NAME "linux" PARENT_SCOPE)
+  elseif (VCPKG_TARGET_IS_OSX OR VCPKG_TARGET_IS_IOS)
+    set(PLATFORM_NAME "mac")
+  endif()
+endfunction()
 
 function(get_compiler_name)
-  # If Windows Translate the MSVC_TOOLSET_VERSION to a COMPILER_NAME in the calling scope
+  # If on Windows translate the MSVC_TOOLSET_VERSION to a COMPILER_NAME 
+  # in the calling scope
   # If not Windows then the compiler name is the empty string
   # Uses the MSVC_TOOLSET_MAP
   # FATAL_ERROR if MSVC_TOOLSET_VERSION is missing in map.
@@ -90,6 +110,7 @@ function(get_arch)
 endfunction()
 
 # Run through the selected features setting and checking the single option
+set(SIMPLE_FEATURES "")
 foreach(variant IN LISTS FEATURES)
   if (variant IN_LIST TARGET_VARIANTS)
     if (TARGET_SELECTED)
@@ -109,27 +130,32 @@ foreach(variant IN LISTS FEATURES)
     else()
       set(THIN_SELECTED "${variant}")
     endif()
+  else()
+    list(APPEND SIMPLE_FEATURES "${variant}")
   endif()
 endforeach()
 
 # set the BUILD_ARCH variable
 get_arch()
+# get th PLATFORM_NAME variable
+get_platform()
 
 # Invoke your Python script — it must deposit files into
 # ${CURRENT_PACKAGES_DIR} when done
 find_package(Python3 REQUIRED)
-
+# python qt-installer.py 6.9.3 windows desktop -a win64_msvc2022_64 -p positioning webchannel webengine virtualkeyboard imageformats datavis3d charts networkauth qt5compat
 execute_process(
-  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/fetch_prebuilt.py"
-          "-a" "${BUILD_ARCH}"
-          "-p" "${CURRENT_PACKAGES_DIR}"
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/qt-installer.py"
+          "${VERSION}" "${PLATFORM_NAME}" "desktop"
+          "-a" "${BUILD_ARCH}" "
+          "-p" "${TARGET_SELECTED}" "${OPENGL_SELECTED}" "${SIMPLE_FEATURES}
   RESULT_VARIABLE result
 )
 
 if(NOT result EQUAL 0)
-  message(FATAL_ERROR "fetch_prebuilt.py failed for triplet ${VCPKG_TARGET_TRIPLET}")
+  message(FATAL_ERROR "qt-installer.py failed for triplet ${VCPKG_TARGET_TRIPLET}")
 endif()
 
 # vcpkg requires a copyright file
-file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/copyright"
-     DESTINATION "${CURRENT_PACKAGES_DIR}/share/mylib")
+#file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/copyright"
+#     DESTINATION "${CURRENT_PACKAGES_DIR}/share/mylib")
