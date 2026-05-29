@@ -25,13 +25,8 @@ jobs:
             build-arch: x86_64
 
     steps:
-      - name: Set vcpkg environmentg (Windows)
-        if: startsWith(runner.os, 'Windows')
-        shell: pwsh
-        run: |
-          echo "VCPKG_DIR=${{ runner.temp }}/vcpkg" >> $env:GITHUB_ENV
-          echo "VCPKG_ROOT=${{ runner.temp }}/vcpkg" >> $env:GITHUB_ENV
-          echo "VCPKG_BINARY_SOURCES=clear;files,${{ runner.temp }}/vcpkg-cache,readwrite" >> $env:GITHUB_ENV
+      - name: Checkout registry repo
+        uses: actions/checkout@v6
 
       - name: Set up binary cache
         uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
@@ -51,17 +46,17 @@ jobs:
       - name: Bootstrap vcpkg (Windows)
         if: startsWith(runner.os, 'Windows')
         run: | 
-          ${{ github.workspace }}/.vcpkg/bootstrap-vcpkg.bat -disableMetrics
-          echo ${{ github.workspace }}/.vcpkg/ >> $GITHUB_PATH
+          ${{ github.workspace }}\.vcpkg\bootstrap-vcpkg.bat -disableMetrics
+          echo ${{ github.workspace }}\.vcpkg\ >> $GITHUB_PATH
 
       - name: Configure tester project   # this drives the port build
         if: startsWith(runner.os, 'Windows')
-        working-directory: test/registry-tester
+        working-directory: test\registry-tester
         run: |
           cmake --preset vcpkg-windows \
             -S . \
             -B .\build
 
       - name: Build tester
-        working-directory: test/registry-tester
-        run: cmake --build test/registry-tester/build
+        working-directory: test\registry-tester
+        run: cmake --build .\build
