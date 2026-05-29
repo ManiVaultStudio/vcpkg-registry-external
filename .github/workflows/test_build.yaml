@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  VCPKG_COMMIT_SHA: 56bb2411609227288b70117ead2c47585ba07713
+  VCPKG_COMMIT_SHA: 56bb2411609227288b70117ead2c47585ba07713 # corresponds to tag 2026.04.27
 
 jobs:
   cross-platform-test-build:
@@ -46,8 +46,10 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git --branch master ${{ env.VCPKG_DIR }}
           git -C ${{ env.VCPKG_DIR }} checkout ${{ env.VCPKG_COMMIT_SHA }}
 
-      - name: Install vcpkg
-        run: ./vcpkg/bootstrap-vcpkg.sh
+      - name: Bootstrap vcpkg (Windows)
+        if: startsWith(runner.os, 'Windows')
+        shell: pwsh
+        run: ${{ env.VCPKG_DIR }}/bootstrap-vcpkg.bat -disableMetrics
 
       - name: Configure tester project   # this drives the port build
         run: |
