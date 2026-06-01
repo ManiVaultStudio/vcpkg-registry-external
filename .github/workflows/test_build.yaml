@@ -68,6 +68,23 @@ jobs:
           dir ${{ github.workspace }}\versions
           dir ${{ github.workspace }}\versions\q-
 
+      - name: Debug vcpkg registry resolution
+        if: startsWith(runner.os, 'Windows')
+        shell: pwsh
+        working-directory: test\registry-tester
+        run: |
+          Write-Host "=== Check for competing vcpkg-configuration.json files ==="
+          Get-ChildItem -Path D:\a\vcpkg-registry\vcpkg-registry -Filter vcpkg-configuration.json -Recurse | Select-Object FullName
+          Write-Host "=== VCPKG_ROOT vcpkg-configuration.json ==="
+          if (Test-Path "$env:VCPKG_ROOT\vcpkg-configuration.json") {
+            Get-Content "$env:VCPKG_ROOT\vcpkg-configuration.json"
+          } else {
+            Write-Host "Not found in VCPKG_ROOT"
+          }
+          Write-Host "=== Running vcpkg install with debug ==="
+          & "$env:VCPKG_ROOT\vcpkg.exe" install --debug 2>&1
+        continue-on-error: true
+
       - name: Set vcpkg config file dynamically (Windows)
         if: startsWith(runner.os, 'Windows')
         shell: pwsh
