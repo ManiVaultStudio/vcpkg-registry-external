@@ -62,6 +62,11 @@ jobs:
         run: |
           echo "VCPKG_FEATURE_FLAGS=registries" >> $env:GITHUB_ENV
           echo "VCPKG_CONFIG_FILE=${{ github.workspace }}\test\registry-tester\vcpkg-configuration.json" >> $env:GITHUB_ENV
+          dir ${{ github.workspace }}
+          dir ${{ github.workspace }}\ports
+          dir ${{ github.workspace }}\ports\qt
+          dir ${{ github.workspace }}\versions
+          dir ${{ github.workspace }}\versions\q-
 
       - name: Configure tester project   # this drives the port build
         if: startsWith(runner.os, 'Windows')
