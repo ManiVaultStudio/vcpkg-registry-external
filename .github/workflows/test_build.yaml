@@ -49,6 +49,7 @@ jobs:
         run: |
           echo "VCPKG_DIR=${{ github.workspace }}\.vcpkg" >> $env:GITHUB_ENV
           echo "VCPKG_ROOT=${{ github.workspace }}\.vcpkg" >> $env:GITHUB_ENV
+          echo "VCPKG_OVERLAY_PORTS=${{ github.workspace }}\ports" >> $env:GITHUB_ENV
 
       - name: Bootstrap vcpkg (Windows)
         if: startsWith(runner.os, 'Windows')
@@ -67,62 +68,6 @@ jobs:
           dir ${{ github.workspace }}\ports\qt
           dir ${{ github.workspace }}\versions
           dir ${{ github.workspace }}\versions\q-
-
-      - name: Debug vcpkg registry resolution
-        if: startsWith(runner.os, 'Windows')
-        shell: pwsh
-        working-directory: test\registry-tester
-        run: |
-          Write-Host "=== Check for competing vcpkg-configuration.json files ==="
-          Get-ChildItem -Path D:\a\vcpkg-registry\vcpkg-registry -Filter vcpkg-configuration.json -Recurse | Select-Object FullName
-          Write-Host "=== VCPKG_ROOT vcpkg-configuration.json ==="
-          if (Test-Path "$env:VCPKG_ROOT\vcpkg-configuration.json") {
-            Get-Content "$env:VCPKG_ROOT\vcpkg-configuration.json"
-          } else {
-            Write-Host "Not found in VCPKG_ROOT"
-          }
-          Write-Host "=== Running vcpkg install with debug ==="
-          & "$env:VCPKG_ROOT\vcpkg.exe" install --debug 2>&1
-        continue-on-error: true
-
-      - name: Set vcpkg config file dynamically (Windows)
-        if: startsWith(runner.os, 'Windows')
-        shell: pwsh
-        run: |
-          echo "VCPKG_FEATURE_FLAGS=registries" >> $env:GITHUB_ENV
-          echo "VCPKG_CONFIG_FILE=${{ github.workspace }}\test\registry-tester\vcpkg-configuration.json" >> $env:GITHUB_ENV
-          $registryPath = "${{ github.workspace }}".Replace("\", "/")
-          $config = @"
-          {
-            "default-registry": {
-              "kind": "git",
-              "repository": "https://github.com/microsoft/vcpkg",
-              "baseline": "${{ env.VCPKG_COMMIT_SHA }}"
-            },
-            "registries": [
-              {
-                "kind": "filesystem",
-                "path": "$registryPath",
-                "packages": ["qt"]
-              }
-            ]
-          }
-          "@
-          $config | Set-Content "${{ github.workspace }}\test\registry-tester\vcpkg-configuration.json"
-          Write-Host "=== Generated vcpkg-configuration.json ==="
-          Get-Content "${{ github.workspace }}\test\registry-tester\vcpkg-configuration.json"
-      - name: Debug vcpkg registry resolution
-        if: startsWith(runner.os, 'Windows')
-        shell: pwsh
-        working-directory: test\registry-tester
-        run: |
-          Write-Host "=== VCPKG_FEATURE_FLAGS: $env:VCPKG_FEATURE_FLAGS ==="
-          Write-Host "=== VCPKG_ROOT: $env:VCPKG_ROOT ==="
-          Write-Host "=== vcpkg-configuration.json contents ==="
-          Get-Content vcpkg-configuration.json
-          Write-Host "=== Running vcpkg install with debug ==="
-          & "$env:VCPKG_ROOT\vcpkg.exe" install --debug 2>&1
-        continue-on-error: true
 
       - name: Configure tester project   # this drives the port build
         if: startsWith(runner.os, 'Windows')
