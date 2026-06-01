@@ -10,8 +10,5 @@
       "path": "../..",
       "packages": ["qt"]
     }
-  ],
-	"features": {
-		"qt6": {}
-  }
+  ]
 }
