@@ -43,7 +43,7 @@ jobs:
           path: .vcpkg
           ref: ${{ env.VCPKG_COMMIT_SHA }}
 
-      - name: Set vcpkg environmentg (Windows)
+      - name: Set vcpkg environment (Windows)
         if: startsWith(runner.os, 'Windows')
         shell: pwsh
         run: |
@@ -55,6 +55,13 @@ jobs:
         run: | 
           ${{ github.workspace }}\.vcpkg\bootstrap-vcpkg.bat -disableMetrics
           echo ${{ github.workspace }}\.vcpkg\ >> $GITHUB_PATH
+
+      - name: Set vcpkg config file (Windows)
+        if: startsWith(runner.os, 'Windows')
+        shell: pwsh
+        run: |
+          echo "VCPKG_FEATURE_FLAGS=registries" >> $env:GITHUB_ENV
+          echo "VCPKG_CONFIG_FILE=${{ github.workspace }}\test\registry-tester\vcpkg-configuration.json" >> $env:GITHUB_ENV
 
       - name: Configure tester project   # this drives the port build
         if: startsWith(runner.os, 'Windows')
