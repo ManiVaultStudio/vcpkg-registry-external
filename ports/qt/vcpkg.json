@@ -12,8 +12,7 @@
             "imageformats",
             "qt5compat",
             "multimedia",
-            "serialport",
-            "thin-arm64"
+            "serialport"
   ],
 
   "features": {
