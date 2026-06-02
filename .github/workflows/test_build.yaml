@@ -74,10 +74,12 @@ jobs:
       - name: Configure tester project   # this drives the port build
         if: startsWith(runner.os, 'Windows')
         working-directory: test\registry-tester
+        env:
+          PYTHON3_EXECUTABLE: "${{ env.pythonLocation }}\\python.exe"
         run: |
           $python = Join-Path $env:pythonLocation "python.exe"
           echo "python at $python"
-          cmake --preset vcpkg-windows -S . -B .\build "-DPYTHON3_EXECUTABLE=$python"
+          cmake --preset vcpkg-windows -S . -B .\build  
 
       - name: Upload vcpkg install log on failure
         if: failure()

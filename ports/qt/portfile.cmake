@@ -145,7 +145,11 @@ get_platform()
 # python qt-installer.py 6.9.3 windows desktop -a win64_msvc2022_64 -p positioning webchannel webengine virtualkeyboard imageformats datavis3d charts networkauth qt5compat
 message(STATUS "BUILD_ARCH:  ${BUILD_ARCH}, TARGET_SELECTED: ${TARGET_SELECTED}, OPENGL_SELECTED: ${OPENGL_SELECTED}, SIMPLE_FEATURES: ${SIMPLE_FEATURES}")
 
-  message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
+set(PYTHON3_EXECUTABLE "$ENV{PYTHON3_EXECUTABLE}")
+if(NOT PYTHON3_EXECUTABLE)
+  message(FATAL_ERROR "PYTHON3_EXECUTABLE environment variable is not set.")
+endif()
+message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
 execute_process(
   COMMAND "${PYTHON3_EXECUTABLE}" -m pip install requests
   RESULT_VARIABLE pip_result
