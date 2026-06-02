@@ -111,6 +111,7 @@ endfunction()
 
 # Run through the selected features setting and checking the single option
 set(SIMPLE_FEATURES "")
+message(STATUS "Unparsed feature list: ${FEATURES}")
 foreach(variant IN LISTS FEATURES)
   if (variant IN_LIST TARGET_VARIANTS)
     if (TARGET_SELECTED)
