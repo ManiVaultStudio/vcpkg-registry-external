@@ -164,7 +164,7 @@ execute_process(
   COMMAND "${PYTHON3_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/qt-installer.py"
           "${VERSION}" "${PLATFORM_NAME}" "${TARGET_SELECTED}"
           "-a" "${BUILD_ARCH}"
-          "-p" "${OPENGL_SELECTED}" "${SIMPLE_FEATURES}"
+          "-p" "${SIMPLE_FEATURES}"
   RESULT_VARIABLE result
 )
 
