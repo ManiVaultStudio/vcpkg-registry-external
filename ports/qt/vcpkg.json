@@ -5,7 +5,6 @@
   "default-features": [
             "target-desktop",
             "opengl-desktop",
-            "openssl",
             "positioning",
             "webchannel",
             "webengine",
@@ -29,7 +28,6 @@
         "supports": "windows | osx | linux"
       },
       "opengl-dynamic": {"description": "OpenGL runtime loading"},
-      "openssl": {"description": "SSL support classes"},
       "positioning": {"description": "in Qt6 this is required for webengine"},
       "webchannel": {"description": "in Qt6 this is required for webengine"},
       "webengine": {"description": "Qt webbrowser"},
