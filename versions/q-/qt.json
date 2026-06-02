@@ -1,7 +1,7 @@
 {
   "versions": [
     {
-      "git-tree": "e50b268400bf1428d90eb1a5e2968f92f9fc71fc",
+      "git-tree": "$/ports/qt",
       "version": "6.9.3",
       "port-version": 0
     }

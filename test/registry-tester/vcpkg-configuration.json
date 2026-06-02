@@ -9,7 +9,9 @@
       "kind": "filesystem",
       "path": "../..",
       "baseline": "default",
-      "packages": ["qt"]
+      "packages": [
+        "qt"
+      ]
     }
   ]
 }
