@@ -66,7 +66,7 @@ jobs:
           echo "VCPKG_FEATURE_FLAGS=registries" >> $env:GITHUB_ENV
           $config_path = Join-Path ${{ github.workspace }} test registry-tester vcpkg-configuration.json
           echo "VCPKG_CONFIG_FILE=$config-path" >> $env:GITHUB_ENV
-          echo "PYTHON3_EXECUTABLE=$python" >> $env:GITHUB_ENV
+          Add-Content -Path $env:GITHUB_ENV -Value "PYTHON3_EXECUTABLE=$python"
           $test_workdir = Join-Path ${{ github.workspace }} test registry-tester
           echo "TEST_WORKDIR=$test_workdir" >> $env:GITHUB_ENV
 

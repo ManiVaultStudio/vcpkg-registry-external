@@ -164,7 +164,7 @@ message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
 message(STATUS "Run the qt-installer")
 string(REPLACE ";" " " FEATURE_STRING "${SIMPLE_FEATURES}")
 execute_process(
-  COMMAND "python3" "${CMAKE_CURRENT_LIST_DIR}/qt-installer.py"
+  COMMAND "${PYTHON3_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/qt-installer.py"
           "${VERSION}" "${PLATFORM_NAME}" "${TARGET_SELECTED}"
           "-a" "${BUILD_ARCH}"
           "-p" ${SIMPLE_FEATURES}
