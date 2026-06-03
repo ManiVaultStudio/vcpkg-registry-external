@@ -70,6 +70,11 @@ jobs:
           $test_workdir = Join-Path ${{ github.workspace }} test registry-tester
           echo "TEST_WORKDIR=$test_workdir" >> $env:GITHUB_ENV
 
+      - name: Install required Python packages
+        run: |
+          $env:PYTHON3_EXECUTABLE -m pip install --upgrade pip
+          $env:PYTHON3_EXECUTABLE -m pip install requests packaging colorama
+
       - name: Configure tester project   # this drives the port build
         shell: pwsh
         env:

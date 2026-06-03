@@ -154,13 +154,13 @@ if(NOT PYTHON3_EXECUTABLE)
   message(FATAL_ERROR "PYTHON3_EXECUTABLE environment variable is not set.")
 endif()
 message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
-execute_process(
-  COMMAND "${PYTHON3_EXECUTABLE}" -m pip install requests packaging colorama
-  RESULT_VARIABLE pip_result
-)
-if(NOT pip_result EQUAL 0)
-  message(FATAL_ERROR "Failed to install Python 'requests' module")
-endif()
+#execute_process(
+#  COMMAND "${PYTHON3_EXECUTABLE}" -m pip install requests packaging colorama
+#  RESULT_VARIABLE pip_result
+#)
+#if(NOT pip_result EQUAL 0)
+#  message(FATAL_ERROR "Failed to install Python 'requests' module")
+#endif()
 message(STATUS "Run the qt-installer")
 string(REPLACE ";" " " FEATURE_STRING "${SIMPLE_FEATURES}")
 execute_process(
