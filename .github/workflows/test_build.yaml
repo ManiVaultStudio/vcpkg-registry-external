@@ -61,7 +61,7 @@ jobs:
             $python = Join-Path $env:pythonLocation "python.exe"
           } else {
             & "${{ github.workspace }}\.vcpkg\bootstrap-vcpkg.sh" -disableMetrics
-            $python = Join-Path $env:pythonLocation "python3"
+            $python = Join-Path $env:pythonLocation "bin" "python3"
           }
           echo ${{ github.workspace }}\.vcpkg\ >> $GITHUB_PATH
           echo "VCPKG_FEATURE_FLAGS=registries" >> $env:GITHUB_ENV
@@ -76,7 +76,7 @@ jobs:
         run: |
           python3 -m pip install --upgrade pip
           python3 -m pip install requests packaging colorama
-          
+
       - name: Install Linux build dependencies
         if: runner.os == 'Linux'
         run: |
