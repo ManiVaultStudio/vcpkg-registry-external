@@ -71,6 +71,7 @@ jobs:
           echo "TEST_WORKDIR=$test_workdir" >> $env:GITHUB_ENV
 
       - name: Install required Python packages
+        shell: pwsh
         run: |
           & "$env:PYTHON3_EXECUTABLE" -m pip install --upgrade pip
           & "$env:PYTHON3_EXECUTABLE" -m pip install requests packaging colorama
