@@ -50,7 +50,7 @@ function(get_platform)
   elseif (VCPKG_TARGET_IS_LINUX)
     set(PLATFORM_NAME "linux" PARENT_SCOPE)
   elseif (VCPKG_TARGET_IS_OSX OR VCPKG_TARGET_IS_IOS)
-    set(PLATFORM_NAME "mac")
+    set(PLATFORM_NAME "mac" PARENT_SCOPE)
   else()
     message(FATAL_ERROR "Could not identify platform from VCPKG_TARGET_IS_OSX: ${VCPKG_TARGET_IS_OSX} or VCPKG_TARGET_IS_IOS: ${VCPKG_TARGET_IS_IOS}")
   endif()
@@ -149,7 +149,6 @@ get_platform()
 # Invoke your Python script — it must deposit files into
 # ${CURRENT_PACKAGES_DIR} when done
 # python qt-installer.py 6.9.3 windows desktop -a win64_msvc2022_64 -p positioning webchannel webengine virtualkeyboard imageformats datavis3d charts networkauth qt5compat
-message(STATUS "BUILD_ARCH:  ${BUILD_ARCH}, TARGET_SELECTED: ${TARGET_SELECTED}, OPENGL_SELECTED: ${OPENGL_SELECTED}, SIMPLE_FEATURES: ${SIMPLE_FEATURES}")
 
 set(PYTHON3_EXECUTABLE "$ENV{PYTHON3_EXECUTABLE}")
 if(NOT PYTHON3_EXECUTABLE)
