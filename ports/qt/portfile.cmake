@@ -163,7 +163,7 @@ message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
 #if(NOT pip_result EQUAL 0)
 #  message(FATAL_ERROR "Failed to install Python 'requests' module")
 #endif()
-message(STATUS "Run the qt-installer")
+message(STATUS "Run the qt-installer: version: ${VERSION} platform: ${PLATFORM_NAME} target:  ${TARGET_SELECTED} architecture: ${BUILD_ARCH} ")
 string(REPLACE ";" " " FEATURE_STRING "${SIMPLE_FEATURES}")
 execute_process(
   COMMAND "${PYTHON3_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/qt-installer.py"
