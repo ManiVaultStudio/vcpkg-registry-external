@@ -194,6 +194,22 @@ if(ICU_LIBS)
     file(REMOVE ${ICU_LIBS})
 endif()
 
+# fix rpaths for MacOS tools 
+if(VCPKG_TARGET_IS_OSX OR VCPKG_TARGET_IS_IOS)
+  file(GLOB QT_TOOLS "${CURRENT_PACKAGES_DIR}/libexec/*" "${CURRENT_PACKAGES_DIR}/bin/*")
+  foreach(tool ${QT_TOOLS})
+      if(NOT IS_DIRECTORY "${tool}")
+          execute_process(
+              COMMAND install_name_tool -add_rpath "@executable_path/../lib" "${tool}"
+              RESULT_VARIABLE rpath_result
+          )
+          if(NOT rpath_result EQUAL 0)
+              message(WARNING "Failed to add rpath to ${tool}")
+          endif()
+      endif()
+  endforeach()
+endif()
+
 # vcpkg requires a copyright file
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/copyright"
      DESTINATION "${CURRENT_PACKAGES_DIR}/share/qt")
