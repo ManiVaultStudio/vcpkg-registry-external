@@ -63,11 +63,11 @@ jobs:
             & "${{ github.workspace }}\.vcpkg\bootstrap-vcpkg.sh" -disableMetrics
             $python = Join-Path $env:pythonLocation "bin" "python3"
           }
+          Add-Content -Path $env:GITHUB_ENV -Value "PYTHON3_EXECUTABLE=$python"
           echo ${{ github.workspace }}\.vcpkg\ >> $GITHUB_PATH
           echo "VCPKG_FEATURE_FLAGS=registries" >> $env:GITHUB_ENV
           $config_path = Join-Path ${{ github.workspace }} test registry-tester vcpkg-configuration.json
           echo "VCPKG_CONFIG_FILE=$config-path" >> $env:GITHUB_ENV
-          Add-Content -Path $env:GITHUB_ENV -Value "PYTHON3_EXECUTABLE=$python"
           $test_workdir = Join-Path ${{ github.workspace }} test registry-tester
           Add-Content -Path $env:GITHUB_ENV -Value "TEST_WORKDIR=$test_workdir"
 
@@ -106,7 +106,6 @@ jobs:
           name: vcpkg-manifest-install-log
           path: test/registry-tester/build/vcpkg-manifest-install.log
       - name: Build tester
-        working-directory: "$env{TEST_WORKDIR}"
         shell: pwsh
         run: | 
           Set-Location "$env:TEST_WORKDIR"
