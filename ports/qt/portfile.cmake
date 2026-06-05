@@ -200,6 +200,7 @@ if(VCPKG_TARGET_IS_OSX)
         "${CURRENT_PACKAGES_DIR}/bin/*"
         "${CURRENT_PACKAGES_DIR}/libexec/*"
         "${CURRENT_PACKAGES_DIR}/lib/*.dylib"
+        "${CURRENT_PACKAGES_DIR}/lib/*.framework/*/*/*/*"
     )
     foreach(binary ${MACHO_BINARIES})
         if(NOT IS_DIRECTORY "${binary}")
