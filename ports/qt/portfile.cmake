@@ -235,6 +235,13 @@ if(VCPKG_TARGET_IS_OSX)
     endforeach()
 endif()
 
+message(STATUS "*** Validate rpath in installed rcc ***")
+execute_process(
+    COMMAND otool -l "${CURRENT_PACKAGES_DIR}/libexec/rcc"
+    OUTPUT_VARIABLE rcc_check
+)
+message(STATUS "rcc rpaths: ${rcc_check}")
+
 # vcpkg requires a copyright file
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/copyright"
      DESTINATION "${CURRENT_PACKAGES_DIR}/share/qt")
