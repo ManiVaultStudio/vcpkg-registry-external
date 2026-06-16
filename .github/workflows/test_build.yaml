@@ -100,7 +100,6 @@ jobs:
             else { "vcpkg-macos" }
           $buildDir = Join-Path "." "build"
           cmake --preset $preset -S . -B $buildDir  
-          dir "$env:VCPKG_DEFAULT_BINARY_CACHE"
 
       - name: Upload vcpkg install log on failure
         if: failure()

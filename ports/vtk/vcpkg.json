@@ -1,0 +1,47 @@
+{
+  "name": "vtk",
+  "version": "9.4.1",
+  "description": "VTK is a free and open-source software system for 3D computer graphics, image processing, and visualization.",
+  "homepage": "https://github.com/Kitware/VTK",
+  "license": null,
+  "dependencies": [
+        { 
+      "name": "qt", 
+      "features": [ "target-desktop" ] 
+    }
+  ],
+  "default-features": [
+            "qt",
+            "mpi",
+            "fPIC",
+            "minimal",
+            "ioxml",
+            "ioexport",
+            "mpi_minimal",
+            "ioxdmf3",
+            "iolegacy",
+            "basic_viewer"
+  ],
+
+  "features": {
+      "qt": {"description": "Build with Qt support"},
+      "mpi": {"description": "Build with MPI support"},
+      "fPIC": {"description": "Build with fPIC support"},
+      "minimal": {"description": "Build minimal version"},
+      "ioxml": {"description": "Build with XML I/O support"},
+      "ioexport": {"description": "Build with export I/O support"},
+      "mpi_minimal": {"description": "Build minimal MPI version"},
+      "ioxdmf3": {"description": "Build with XDMF3 I/O support"},
+      "iolegacy": {"description": "Build with legacy I/O support"},
+      "basic_viewer": {"description": "Build basic viewer"},
+      "thin-arm64": {
+        "description": "Make thin vtk for arm64 on macos",
+        "supports": "osx"
+
+      }, 
+      "thin-x86-64": {
+        "description": "Make thin vtk for x86_64 on macos",
+        "supports": "osx"
+      }
+  }
+}
