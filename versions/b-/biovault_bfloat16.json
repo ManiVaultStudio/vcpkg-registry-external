@@ -1,0 +1,9 @@
+{
+  "versions": [
+    {
+      "path": "$/ports/biovault_bfloat16",
+      "version": "1.0.2",
+      "port-version": 0
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "biovault_bfloat16",
+  "version": "1.0.2",
+  "port-version": 0,
+  "description": "A C++ library for bfloat16 data type."
+}
