@@ -7,4 +7,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(biovault-bfloat16 CONFIG REQUIRED)
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(myapp PRIVATE biovault-bfloat16::biovault-bfloat16)
+target_link_libraries(${PROJECT_NAME} PRIVATE biovault-bfloat16::biovault-bfloat16)
