@@ -2,5 +2,9 @@
   "name": "hdilib",
   "version": "2.0.0",
   "port-version": 0,
-  "description": "A C++ library for high-dimensional embeddings implementing tSNE and HSNE."
+  "description": "A C++ library for high-dimensional embeddings implementing tSNE and HSNE.",
+  "dependencies": [
+    { "name": "vcpkg-cmake", "host": true },
+    { "name": "vcpkg-cmake-config", "host": true }
+  ]
 }
