@@ -5,6 +5,8 @@ project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(lz4 CONFIG REQUIRED)
+find_package(flann CONFIG REQUIRED)
 find_package(HDILib COMPONENTS hdidimensionalityreduction hdiutils hdidata CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
