@@ -7,7 +7,17 @@
     { "name": "vcpkg-cmake", "host": true },
     { "name": "vcpkg-cmake-config", "host": true },
     "flann",
-    "fmt",
+    "fmt"
+  ],
+  "default-features": [
     "kompute"
-  ]
+  ],
+  "features": {
+    "kompute": {
+      "description": "Enable Vulkan/Kompute support",
+      "dependencies": [
+        "kompute"
+      ]
+    }
+  }
 }
