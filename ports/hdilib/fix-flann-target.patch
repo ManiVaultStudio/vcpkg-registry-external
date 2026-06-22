@@ -6,7 +6,7 @@ index d8824b3..6c278f5 100644
              DESTINATION lib/cmake/HDILib
              COMPONENT HDIDATA_TARGET
      )
-+    set_target_properties(${PROJECT} PROPERTIES INTERFACE_LINK_LIBRARIES "")^M
++    set_target_properties(${PROJECT} PROPERTIES INTERFACE_LINK_LIBRARIES "")
  endif()
 diff --git a/hdi/dimensionality_reduction/CMakeLists.txt b/hdi/dimensionality_reduction/CMakeLists.txt
 index 77a3818..77cb45f 100644
@@ -16,8 +16,8 @@ index 77a3818..77cb45f 100644
              DESTINATION lib/cmake/HDILib
              COMPONENT HDIDIMENSIONALITYREDUCTION_TARGET
      )
-+    # Remove compiler definitions incorrectly injected into link interface^M
-+    set_target_properties(${PROJECT} PROPERTIES INTERFACE_LINK_LIBRARIES "")^M
++    # Remove compiler definitions incorrectly injected into link interface
++    set_target_properties(${PROJECT} PROPERTIES INTERFACE_LINK_LIBRARIES "")
  endif()
  
  if(USE_VULKAN_KOMPUTE)
@@ -29,5 +29,5 @@ index b35d0b0..f190cab 100644
              DESTINATION lib/cmake/HDILib
              COMPONENT HDIUTILS_TARGET
      )
-+    set_target_properties(${PROJECT} PROPERTIES INTERFACE_LINK_LIBRARIES "")^M
++    set_target_properties(${PROJECT} PROPERTIES INTERFACE_LINK_LIBRARIES "")
  endif()
