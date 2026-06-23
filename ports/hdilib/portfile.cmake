@@ -16,6 +16,7 @@ execute_process(COMMAND powershell -Command "Get-ChildItem -Filter glslangValida
 
 message(STATUS "Copy output: ${_copy_output}")
 message(STATUS "Copy error: ${_copy_error}")
+message(STATUS "Current installed dir: ${CURRENT_INSTALLED_DIR}")
 vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release
