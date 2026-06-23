@@ -21,7 +21,7 @@ message(STATUS "Current installed dir: ${CURRENT_INSTALLED_DIR}")
 message(STATUS "Github workspace: $ENV{GITHUB_WORKSPACE}")
 
 
-execute_process(COMMAND powershell -Command "Get-ChildItem -Path '$ENV{GITHUB_WORKSPACE}/test/registry-tester/build/vcpkg_installed' -Filter 'glsl*.exe' -Recurse | Select-Object FullName" 
+execute_process(COMMAND powershell -Command "Get-ChildItem -Path '${CURRENT_INSTALLED_DIR}/../' -Filter 'glsl*.exe' -Recurse | Select-Object FullName" 
   RESULT_VARIABLE _copy_result
   OUTPUT_VARIABLE _copy_output
   ERROR_VARIABLE _copy_error
