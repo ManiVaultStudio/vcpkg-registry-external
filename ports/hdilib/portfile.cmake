@@ -14,6 +14,8 @@ else()
   set(EXE_SUFFIX "")
 endif()
 
+set(ENV{VULKAN_SDK} "${CURRENT_INSTALLED_DIR}")
+
 vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release
@@ -21,9 +23,6 @@ vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   -DENABLE_TESTS=OFF
   -DHDILib_BUILD_TESTS=OFF
   -DFETCHCONTENT_FULLY_DISCONNECTED=OFF
-  -DVulkan_GLSLC_EXECUTABLE=${CURRENT_HOST_INSTALLED_DIR}/tools/shaderc/glslc${EXE_SUFFIX}
-  -DVulkan_GLSLANG_VALIDATOR_EXECUTABLE=${CURRENT_HOST_INSTALLED_DIR}/tools/glslang/glslangValidator${EXE_SUFFIX}
-
   )
 
 vcpkg_cmake_install()
