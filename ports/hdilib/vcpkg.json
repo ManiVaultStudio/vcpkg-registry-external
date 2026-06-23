@@ -16,7 +16,7 @@
     {
       "name": "shaderc",
       "host": true
-    },
+    }
   ],
   "default-features": [
     "kompute"
