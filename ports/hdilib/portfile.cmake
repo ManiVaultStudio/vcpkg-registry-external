@@ -19,6 +19,20 @@ message(STATUS "Copy output: ${_copy_output}")
 message(STATUS "Copy error: ${_copy_error}")
 message(STATUS "Current installed dir: ${CURRENT_INSTALLED_DIR}")
 message(STATUS "Github workspace: $ENV{GITHUB_WORKSPACE}")
+
+
+execute_process(COMMAND powershell -Command "dir /s /b $ENV{GITHUB_WORKSPACE}\\test\\registry-tester\\build\\vcpkg_installed\\*\\tools\\glslang\\glslangValidator.exe" 
+  WORKING_DIRECTORY "$ENV{GITHUB_WORKSPACE}"
+  RESULT_VARIABLE _copy_result
+  OUTPUT_VARIABLE _copy_output
+  ERROR_VARIABLE _copy_error
+)
+
+message(STATUS "Copy output: ${_copy_output}")
+message(STATUS "Copy error: ${_copy_error}")
+message(STATUS "Current installed dir: ${CURRENT_INSTALLED_DIR}")
+message(STATUS "Github workspace: $ENV{GITHUB_WORKSPACE}")
+
 vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release
