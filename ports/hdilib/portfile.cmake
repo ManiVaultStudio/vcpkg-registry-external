@@ -8,11 +8,6 @@ vcpkg_from_github(
 #    fix-flann-target.patch
 )
 
-if(VCPKG_TARGET_IS_WINDOWS)
-  set(EXE_SUFFIX ".exe")
-else()
-  set(EXE_SUFFIX "")
-endif()
 
 vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
@@ -21,6 +16,7 @@ vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   -DENABLE_TESTS=OFF
   -DHDILib_BUILD_TESTS=OFF
   -DFETCHCONTENT_FULLY_DISCONNECTED=OFF
+  -DGLSLC_PROGRAM=${CURRENT_HOST_INSTALLED_DIR}/tools/shaderc/glslc${VCPKG_HOST_EXECUTABLE_SUFFIX}
   )
 
 vcpkg_cmake_install()
