@@ -2,6 +2,7 @@
   "versions": [
     {
       "path": "$/ports/hdilib",
+      "git-tree": "a38f5f9f6d93f37291278d77666776e61c4286d0",
       "version": "2.0.1",
       "port-version": 0
     }

@@ -2,9 +2,9 @@
   "versions": [
     {
       "path": "$/ports/qt",
+      "git-tree": "68abc6444a8008e3cedb326d07716540642a5b02",
       "version": "6.9.3",
-      "port-version": 0,
-      "git-tree": "68abc6444a8008e3cedb326d07716540642a5b02"
+      "port-version": 0
     }
   ]
 }
