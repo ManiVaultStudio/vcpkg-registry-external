@@ -164,6 +164,7 @@ message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
 #endif()
 message(STATUS "Run the qt-installer: version: ${VERSION} platform: ${PLATFORM_NAME} target:  ${TARGET_SELECTED} architecture: ${BUILD_ARCH} ")
 string(REPLACE ";" " " FEATURE_STRING "${SIMPLE_FEATURES}")
+set(ENV{PYTHONDONTWRITEBYTECODE} "1")
 execute_process(
   COMMAND "${PYTHON3_EXECUTABLE}" "${CMAKE_CURRENT_LIST_DIR}/qt-installer.py"
           "${VERSION}" "${PLATFORM_NAME}" "${TARGET_SELECTED}"
