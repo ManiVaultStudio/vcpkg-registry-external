@@ -22,11 +22,29 @@ endif()
 vcpkg_cmake_build()
 vcpkg_cmake_config_fixup()
 
-install(TARGETS FreeImage FreeImageLib LibJPEG LibJXR LibOpenJPEG LibPNG LibRaw LibTIFF4 LibWebP OpenEXR ZLibFreeImage
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+set(FI_TARGET_LIST FreeImage FreeImageLib LibJPEG LibJXR LibOpenJPEG LibPNG LibRaw LibTIFF4 LibWebP OpenEXR ZLibFreeImage)
 
+foreach(target IN LISTS FI_TARGET_LIST)
+  file(INSTALL "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel/${target}"
+      DESTINATION "${CURRENT_PACKAGES_DIR}/lib")
+endforeach()
+set( HEADER_FILES
+	${SOURCE_PATH}/Source/CacheFile.h
+	${SOURCE_PATH}/Source/FreeImage.h
+	${SOURCE_PATH}/Source/FreeImageIO.h
+	${SOURCE_PATH}/Source/MapIntrospector.h
+	${SOURCE_PATH}/Source/Plugin.h
+	${SOURCE_PATH}/Source/Quantizers.h
+	${SOURCE_PATH}/Source/ToneMapping.h
+	${SOURCE_PATH}/Source/Utilities.h
+	${SOURCE_PATH}/Source/Metadata/FIRational.h
+	${SOURCE_PATH}/Source/Metadata/FreeImageTag.h
+	${SOURCE_PATH}/Source/FreeImage/PSDParser.h
+	${SOURCE_PATH}/Source/FreeImage/J2KHelper.h
+)
+
+file(INSTALL "${HEADER_FILES}"
+     DESTINATION "${CURRENT_PACKAGES_DIR}/include")
 
 # Handle copyright
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/license-fi.txt")
