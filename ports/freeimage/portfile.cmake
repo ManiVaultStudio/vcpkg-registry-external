@@ -18,7 +18,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(FreeImageLib PRIVATE /permissive) # we don't need the static library, but just in case someone does build it
 endif()
 
-vcpkg_cmake_install()
+# vcpkg_cmake_install()
 
 # Handle copyright
 file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME "copyright")
