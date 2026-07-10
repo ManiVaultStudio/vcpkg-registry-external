@@ -22,5 +22,11 @@ endif()
 vcpkg_cmake_build()
 vcpkg_cmake_config_fixup()
 
+install(TARGETS FreeImage FreeImageLib LibJPEG LibJXR LibOpenJPEG LibPNG LibRaw LibTIFF4 LibWebP OpenEXR ZLibFreeImage
+        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+        ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+
+
 # Handle copyright
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/license-fi.txt")
