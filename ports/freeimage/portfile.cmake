@@ -22,11 +22,15 @@ endif()
 vcpkg_cmake_build()
 vcpkg_cmake_config_fixup()
 
-set(FI_TARGET_LIST FreeImage FreeImageLib LibJPEG LibJXR LibOpenJPEG LibPNG LibRaw LibTIFF4 LibWebP OpenEXR ZLibFreeImage)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  set(FI_TARGET_LIST FreeImage FreeImageLib LibJPEG.dll LibJXR LibOpenJPEG LibPNG LibRaw LibTIFF4 LibWebP OpenEXR ZLibFreeImage)
+else()
+  set(FI_TARGET_LIST libFreeImage libFreeImageLib libLibJPEG libLibJXR libLibOpenJPEG libLibPNG libLibRaw libLibTIFF4 libLibWebP libOpenEXR libZLibFreeImage)
+endif()
 
 foreach(target IN LISTS FI_TARGET_LIST)
   file(INSTALL "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel/${target}"
-      DESTINATION "${CURRENT_PACKAGES_DIR}/lib")
+      DESTINATION "${CURRENT_PACKAGES_DIR}/lib" PATTERN "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel/${target}.*")
 endforeach()
 set( HEADER_FILES
 	${SOURCE_PATH}/Source/CacheFile.h
