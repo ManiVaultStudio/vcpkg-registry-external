@@ -18,6 +18,9 @@
       "name": "glslang",
       "features": [ "tools" ] ,
       "host": true
+    },
+    {
+      "name": "freeimage"
     }
   ],
   "overrides": [
