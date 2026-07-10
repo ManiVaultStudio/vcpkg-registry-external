@@ -10,6 +10,7 @@ vcpkg_cmake_configure(SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release)
 
+  # We happily use the internal libraries
 
 # Remove /permissive- for OpenEXR and FreeImage
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -18,7 +19,8 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(FreeImageLib PRIVATE /permissive) # we don't need the static library, but just in case someone does build it
 endif()
 
-# vcpkg_cmake_install()
+vcpkg_cmake_build()
+vcpkg_cmake_config_fixup()
 
 # Handle copyright
-file(INSTALL "${SOURCE_PATH}/LICENSE" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME "copyright")
+vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/license-fi.txt")
