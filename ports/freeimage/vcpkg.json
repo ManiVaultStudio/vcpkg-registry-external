@@ -1,0 +1,5 @@
+{
+  "name": "freeimage",
+  "version": "3.19.0.2",
+  "description": "A C++ library for bfloat16 data type."
+}
