@@ -75,5 +75,14 @@ set( HEADER_FILES
 file(INSTALL ${HEADER_FILES}
      DESTINATION "${CURRENT_PACKAGES_DIR}/include")
 
+# Near the end of your portfile.cmake
+file(WRITE "${CURRENT_PACKAGES_DIR}/share/freeimage/freeimageConfig.cmake" "
+    add_library(freeimage::freeimage UNKNOWN IMPORTED)
+    set_target_properties(freeimage::freeimage PROPERTIES
+        IMPORTED_LOCATION \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage.lib\"
+        INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
+    )
+")
+
 # Handle copyright
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/license-fi.txt")
