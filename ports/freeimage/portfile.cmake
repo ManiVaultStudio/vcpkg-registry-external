@@ -57,14 +57,14 @@ endfunction()
 if(NOT WIN32 AND NOT APPLE)
     set(RELEASE_SO_FILE "libFreeImage.so.${FREEIMAGE_VERSION_3_DIGIT}")
     
-    # Create symlinks in lib/
-    if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/${RELEASE_SO_FILE}")
-        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/lib/libFreeImage.so" SYMBOLIC)
+    # Symlink the shared library right next to the versioned file in bin/
+    if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/bin/libFreeImage.so")
+        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/bin/libFreeImage.so" SYMBOLIC)
     endif()
     
-    # Create symlinks in bin/ just in case vcpkg is utilizing/populating it
-    if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/${RELEASE_SO_FILE}")
-        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/bin/libFreeImage.so" SYMBOLIC)
+    # Repeat for Debug configurations
+    if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/libFreeImage.so")
+        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/debug/bin/libFreeImage.so" SYMBOLIC)
     endif()
 endif()
 
@@ -103,36 +103,55 @@ file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/share/freeimage")
 set(CONFIG_CONTENT "
 set(freeimage_VERSION \"${FREEIMAGE_VERSION_3_DIGIT}\")
 set(FreeImage_VERSION \"${FREEIMAGE_VERSION_3_DIGIT}\")
-add_library(freeimage::freeimage UNKNOWN IMPORTED)
 
+# Define cross-platform filenames based on your build setup
 if(WIN32)
-    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage.lib\")
-        set(LIB_LOCATION \"lib/FreeImage.lib\")
-    else()
-        set(LIB_LOCATION \"lib/FreeImageLib.lib\")
-    endif()
+    set(SHARED_LIB \"bin/FreeImage.lib\") # Import library for DLL
+    set(STATIC_LIB \"lib/FreeImageLib.lib\")
 elseif(APPLE)
-    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.dylib\")
-        set(LIB_LOCATION \"lib/libFreeImage.dylib\")
-    else()
-        set(LIB_LOCATION \"lib/libFreeImageLib.a\")
-    endif()
+    set(SHARED_LIB \"bin/libFreeImage.dylib\")
+    set(STATIC_LIB \"lib/libFreeImageLib.a\")
 else()
-    # Linux / Unix: Check if vcpkg moved it to bin/ or kept it in lib/
-    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../bin/libFreeImage.so\")
-        set(LIB_LOCATION \"bin/libFreeImage.so\")
-    elseif(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.so\")
-        set(LIB_LOCATION \"lib/libFreeImage.so\")
-    else()
-        set(LIB_LOCATION \"lib/libFreeImageLib.a\")
+    # Linux / Unix
+    set(SHARED_LIB \"bin/libFreeImage.so\")
+    set(STATIC_LIB \"lib/libFreeImageLib.a\")
+endif()
+
+# ----------------------------------------------------
+# Target 1: Shared Library (freeimage::freeimage)
+# ----------------------------------------------------
+if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../\${SHARED_LIB}\")
+    if(NOT TARGET freeimage::freeimage)
+        add_library(freeimage::freeimage UNKNOWN IMPORTED)
+        set_target_properties(freeimage::freeimage PROPERTIES
+            IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../\${SHARED_LIB}\"
+            IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/\${SHARED_LIB}\"
+            INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
+        )
     endif()
 endif()
 
-set_target_properties(freeimage::freeimage PROPERTIES
-    IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../\${LIB_LOCATION}\"
-    IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/\${LIB_LOCATION}\"
-    INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
-)
+# ----------------------------------------------------
+# Target 2: Static Library (freeimage::freeimage-static)
+# ----------------------------------------------------
+if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../\${STATIC_LIB}\")
+    if(NOT TARGET freeimage::freeimage-static)
+        add_library(freeimage::freeimage-static STATIC IMPORTED)
+        set_target_properties(freeimage::freeimage-static PROPERTIES
+            IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../\${STATIC_LIB}\"
+            IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/\${STATIC_LIB}\"
+            INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
+        )
+    endif()
+    
+    # Alias to fallback seamlessly if a consumer drops \"-static\" but wants the static target
+    if(NOT TARGET freeimage::freeimage)
+        add_library(freeimage::freeimage INTERFACE IMPORTED)
+        set_target_properties(freeimage::freeimage PROPERTIES
+            INTERFACE_LINK_LIBRARIES freeimage::freeimage-static
+        )
+    endif()
+endif()
 ")
 
 # Write both filenames to ensure cross-platform compatibility

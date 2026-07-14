@@ -5,7 +5,7 @@ project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(FreeImage REQUIRED)
+find_package(freeimage CONFIG REQUIRED)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
-target_link_libraries(${PROJECT} PRIVATE FreeImage)
+target_link_libraries(${PROJECT} PRIVATE freeimage::freeimage-static)
