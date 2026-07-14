@@ -75,14 +75,32 @@ set( HEADER_FILES
 file(INSTALL ${HEADER_FILES}
      DESTINATION "${CURRENT_PACKAGES_DIR}/include")
 
-# Near the end of your portfile.cmake
-file(WRITE "${CURRENT_PACKAGES_DIR}/share/freeimage/freeimageConfig.cmake" "
-    add_library(freeimage::freeimage UNKNOWN IMPORTED)
-    set_target_properties(freeimage::freeimage PROPERTIES
-        IMPORTED_LOCATION \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage.lib\"
-        INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
-    )
+# Create the share directory first to prevent write errors
+file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/share/freeimage")
+
+# Define the configuration logic
+set(CONFIG_CONTENT "
+add_library(freeimage::freeimage UNKNOWN IMPORTED)
+
+# Handle cross-platform library extensions
+if(WIN32)
+    set(LIB_EXT \".lib\")
+elseif(APPLE)
+    set(LIB_EXT \".dylib\")
+else()
+    set(LIB_EXT \".so\")
+endif()
+
+set_target_properties(freeimage::freeimage PROPERTIES
+    IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage\${LIB_EXT}\"
+    IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/lib/FreeImage\${LIB_EXT}\"
+    INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
+)
 ")
+
+# Write both filenames to ensure cross-platform compatibility
+file(WRITE "${CURRENT_PACKAGES_DIR}/share/freeimage/freeimageConfig.cmake" "${CONFIG_CONTENT}")
+file(WRITE "${CURRENT_PACKAGES_DIR}/share/freeimage/FreeImageConfig.cmake" "${CONFIG_CONTENT}")
 
 # Handle copyright
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/license-fi.txt")
