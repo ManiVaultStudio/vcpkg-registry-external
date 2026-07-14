@@ -9,6 +9,13 @@ vcpkg_from_github(
 set(RELEASE_TRIPLET ${TARGET_TRIPLET}-rel)
 set(DEBUG_TRIPLET ${TARGET_TRIPLET}-dbg)
 
+if(VERSION MATCHES "^([0-9]+\\.[0-9]+\\.[0-9]+)")
+    set(FREEIMAGE_VERSION_3_DIGIT "${CMAKE_MATCH_1}")
+else()
+    # Fallback just in case the format is unexpected
+    set(FREEIMAGE_VERSION_3_DIGIT "3.19.0") 
+endif()
+
 vcpkg_cmake_configure(SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release)
@@ -47,6 +54,21 @@ function(install_freeimage_libs config_suffix package_subdir)
     endforeach()
 endfunction()
 
+if(NOT WIN32 AND NOT APPLE)
+    # Create symbolic links for library linking on linux
+    set(RELEASE_SO_FILE "libFreeImage.so.${FREEIMAGE_VERSION_3_DIGIT}")
+    
+    # Fix Release Symlink
+    if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/lib/libFreeImage.so")
+        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/lib/libFreeImage.so" SYMBOLIC)
+    endif()
+    
+    # Fix Debug Symlink
+    if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/libFreeImage.so")
+        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/debug/lib/libFreeImage.so" SYMBOLIC)
+    endif()
+endif()
+
 # Perform the installation for both Release and Debug libs
 if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
     install_freeimage_libs("rel" "")
@@ -80,20 +102,35 @@ file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/share/freeimage")
 
 # Define the configuration logic
 set(CONFIG_CONTENT "
+set(freeimage_VERSION \"${FREEIMAGE_VERSION_3_DIGIT}\")
+set(FreeImage_VERSION \"${FREEIMAGE_VERSION_3_DIGIT}\")
 add_library(freeimage::freeimage UNKNOWN IMPORTED)
 
-# Handle cross-platform library extensions
 if(WIN32)
-    set(LIB_EXT \".lib\")
+    # Windows checks if it's a shared or static build framework
+    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage.lib\")
+        set(LIB_NAME \"FreeImage.lib\")
+    else()
+        set(LIB_NAME \"FreeImageLib.lib\")
+    endif()
 elseif(APPLE)
-    set(LIB_EXT \".dylib\")
+    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.dylib\")
+        set(LIB_NAME \"libFreeImage.dylib\")
+    else()
+        set(LIB_NAME \"libFreeImageLib.a\")
+    endif()
 else()
-    set(LIB_EXT \".so\")
+    # Linux / Unix
+    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.so\")
+        set(LIB_NAME \"libFreeImage.so\")
+    else()
+        set(LIB_NAME \"libFreeImageLib.a\")
+    endif()
 endif()
 
 set_target_properties(freeimage::freeimage PROPERTIES
-    IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage\${LIB_EXT}\"
-    IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/lib/FreeImage\${LIB_EXT}\"
+    IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/\${LIB_NAME}\"
+    IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/lib/\${LIB_NAME}\"
     INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
 )
 ")
