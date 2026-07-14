@@ -6,6 +6,9 @@ vcpkg_from_github(
   SHA512 "a7e8f289b2123b2f9919b0b2947940665fd373fd348d16a352db46e23c96ae73812dbba7fc7832b95cbadbedb3085f6f44628ae126d24bf30098aa077c1ccf3e"
 )
 
+set(RELEASE_TRIPLET ${TARGET_TRIPLET}-rel)
+set(DEBUG_TRIPLET ${TARGET_TRIPLET}-dbg)
+
 vcpkg_cmake_configure(SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release)
@@ -22,16 +25,38 @@ endif()
 vcpkg_cmake_build()
 vcpkg_cmake_config_fixup()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  set(FI_TARGET_LIST FreeImage FreeImageLib LibJPEG.dll LibJXR LibOpenJPEG LibPNG LibRaw LibTIFF4 LibWebP OpenEXR ZLibFreeImage)
-else()
-  set(FI_TARGET_LIST libFreeImage libFreeImageLib libLibJPEG libLibJXR libLibOpenJPEG libLibPNG libLibRaw libLibTIFF4 libLibWebP libOpenEXR libZLibFreeImage)
+function(install_freeimage_libs config_suffix package_subdir)
+    # Find all static libs, shared libs, and import libs in this build directory
+    file(GLOB_RECURSE BUILT_LIBS 
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${config_suffix}/*.lib"
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${config_suffix}/*.dll"
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${config_suffix}/*.a"
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${config_suffix}/*.so*"
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-${config_suffix}/*.dylib"
+    )
+
+    foreach(lib_file IN LISTS BUILT_LIBS)
+        # Determine if it's a runtime DLL/shared lib or a static/import lib
+        if(lib_file MATCHES "\\.(dll|so|dylib)$")
+            # Runtime binaries go to /bin or /debug/bin
+            file(INSTALL "${lib_file}" DESTINATION "${CURRENT_PACKAGES_DIR}/${package_subdir}bin")
+        else()
+            # Static/Import libs (.lib, .a) go to /lib or /debug/lib
+            file(INSTALL "${lib_file}" DESTINATION "${CURRENT_PACKAGES_DIR}/${package_subdir}lib")
+        endif()
+    endforeach()
+endfunction()
+
+# Perform the installation for both Release and Debug libs
+if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
+    install_freeimage_libs("rel" "")
 endif()
 
-foreach(target IN LISTS FI_TARGET_LIST)
-  file(INSTALL "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel/${target}"
-      DESTINATION "${CURRENT_PACKAGES_DIR}/lib" PATTERN "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-rel/${target}.*")
-endforeach()
+if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
+    install_freeimage_libs("dbg" "debug/")
+endif()
+
+# Perform header install
 set( HEADER_FILES
 	${SOURCE_PATH}/Source/CacheFile.h
 	${SOURCE_PATH}/Source/FreeImage.h
@@ -47,7 +72,7 @@ set( HEADER_FILES
 	${SOURCE_PATH}/Source/FreeImage/J2KHelper.h
 )
 
-file(INSTALL "${HEADER_FILES}"
+file(INSTALL ${HEADER_FILES}
      DESTINATION "${CURRENT_PACKAGES_DIR}/include")
 
 # Handle copyright
