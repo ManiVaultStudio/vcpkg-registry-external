@@ -55,17 +55,16 @@ function(install_freeimage_libs config_suffix package_subdir)
 endfunction()
 
 if(NOT WIN32 AND NOT APPLE)
-    # Create symbolic links for library linking on linux
     set(RELEASE_SO_FILE "libFreeImage.so.${FREEIMAGE_VERSION_3_DIGIT}")
     
-    # Fix Release Symlink
-    if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/lib/libFreeImage.so")
+    # Create symlinks in lib/
+    if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/${RELEASE_SO_FILE}")
         file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/lib/libFreeImage.so" SYMBOLIC)
     endif()
     
-    # Fix Debug Symlink
-    if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/libFreeImage.so")
-        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/debug/lib/libFreeImage.so" SYMBOLIC)
+    # Create symlinks in bin/ just in case vcpkg is utilizing/populating it
+    if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/${RELEASE_SO_FILE}")
+        file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/bin/libFreeImage.so" SYMBOLIC)
     endif()
 endif()
 
@@ -107,30 +106,31 @@ set(FreeImage_VERSION \"${FREEIMAGE_VERSION_3_DIGIT}\")
 add_library(freeimage::freeimage UNKNOWN IMPORTED)
 
 if(WIN32)
-    # Windows checks if it's a shared or static build framework
     if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/FreeImage.lib\")
-        set(LIB_NAME \"FreeImage.lib\")
+        set(LIB_LOCATION \"lib/FreeImage.lib\")
     else()
-        set(LIB_NAME \"FreeImageLib.lib\")
+        set(LIB_LOCATION \"lib/FreeImageLib.lib\")
     endif()
 elseif(APPLE)
     if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.dylib\")
-        set(LIB_NAME \"libFreeImage.dylib\")
+        set(LIB_LOCATION \"lib/libFreeImage.dylib\")
     else()
-        set(LIB_NAME \"libFreeImageLib.a\")
+        set(LIB_LOCATION \"lib/libFreeImageLib.a\")
     endif()
 else()
-    # Linux / Unix
-    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.so\")
-        set(LIB_NAME \"libFreeImage.so\")
+    # Linux / Unix: Check if vcpkg moved it to bin/ or kept it in lib/
+    if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../bin/libFreeImage.so\")
+        set(LIB_LOCATION \"bin/libFreeImage.so\")
+    elseif(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/libFreeImage.so\")
+        set(LIB_LOCATION \"lib/libFreeImage.so\")
     else()
-        set(LIB_NAME \"libFreeImageLib.a\")
+        set(LIB_LOCATION \"lib/libFreeImageLib.a\")
     endif()
 endif()
 
 set_target_properties(freeimage::freeimage PROPERTIES
-    IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../lib/\${LIB_NAME}\"
-    IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/lib/\${LIB_NAME}\"
+    IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../\${LIB_LOCATION}\"
+    IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/\${LIB_LOCATION}\"
     INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
 )
 ")
