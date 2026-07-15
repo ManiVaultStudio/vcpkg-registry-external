@@ -4,7 +4,7 @@
     "freeimage" : {"baseline": "3.19.0.2", "port-version": 0},
     "hdilib" : { "baseline": "2.0.1", "port-version": 0 },
     "kompute": { "baseline": "0.10.0-a", "port-version": 3 },
-    "qt" : { "baseline": "6.9.3", "port-version": 0 },
+    "qt6" : { "baseline": "6.9.3", "port-version": 0 },
     "vtk" : { "baseline": "9.4.1", "port-version": 0 }
   }
 }

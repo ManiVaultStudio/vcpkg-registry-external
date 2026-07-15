@@ -1,5 +1,5 @@
 {
-  "name": "qt",
+  "name": "qt6",
   "version": "6.9.3",
   "description": "Selected pre-built qt binaries from Qt download - no viral licenses",
   "default-features": [
