@@ -44,7 +44,7 @@ function(install_freeimage_libs config_suffix package_subdir)
 
     foreach(lib_file IN LISTS BUILT_LIBS)
         # Determine if it's a runtime DLL/shared lib or a static/import lib - so files can have a version suffix
-        if(lib_file MATCHES "\\.(dll|so|so\..*|dylib)$")
+        if(lib_file MATCHES "\\.(dll|so|so.*|dylib)$")
             # Runtime binaries go to /bin or /debug/bin
             file(INSTALL "${lib_file}" DESTINATION "${CURRENT_PACKAGES_DIR}/${package_subdir}bin")
         else()
