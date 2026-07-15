@@ -1,4 +1,4 @@
-set(VCPKG_BUILD_TYPE release)  # pre-built, no debug variant
+#set(VCPKG_BUILD_TYPE release)  # pre-built, no debug variant
 set(VCPKG_POLICY_ALLOW_RESTRICTED_HEADERS enabled)
 
 

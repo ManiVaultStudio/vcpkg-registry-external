@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.25)
 set(PROJECT_NAME registry-tester-hdilib)
 project(${PROJECT_NAME})
-set(VCPKG_BUILD_TYPE release)
+#set(VCPKG_BUILD_TYPE release)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
