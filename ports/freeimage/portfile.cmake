@@ -1,4 +1,4 @@
-set(VCPKG_BUILD_TYPE release)  # pre-built, no debug variant
+#set(VCPKG_BUILD_TYPE release)  # pre-built, no debug variant
 vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO "biovault/FreeImage"
@@ -6,8 +6,8 @@ vcpkg_from_github(
   SHA512 "a7e8f289b2123b2f9919b0b2947940665fd373fd348d16a352db46e23c96ae73812dbba7fc7832b95cbadbedb3085f6f44628ae126d24bf30098aa077c1ccf3e"
 )
 
-set(RELEASE_TRIPLET ${TARGET_TRIPLET}-rel)
-set(DEBUG_TRIPLET ${TARGET_TRIPLET}-dbg)
+#set(RELEASE_TRIPLET ${TARGET_TRIPLET}-rel)
+#set(DEBUG_TRIPLET ${TARGET_TRIPLET}-dbg)
 
 if(VERSION MATCHES "^([0-9]+\\.[0-9]+\\.[0-9]+)")
     set(FREEIMAGE_VERSION_3_DIGIT "${CMAKE_MATCH_1}")
