@@ -205,7 +205,7 @@ message(STATUS "rcc rpaths: ${rcc_check}")
 
 # vcpkg requires a copyright file
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/copyright"
-     DESTINATION "${CURRENT_PACKAGES_DIR}/share/qt")
+     DESTINATION "${CURRENT_PACKAGES_DIR}/share/qt6")
 
 if(VCPKG_TARGET_IS_OSX)
   set(CMAKE_INSTALL_RPATH "@loader_path/../Frameworks")
