@@ -6,7 +6,7 @@
   "license": null,
   "dependencies": [
     {
-      "name": "qt",
+      "name": "qt6",
       "features": [
         "target-desktop"
       ]
