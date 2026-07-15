@@ -54,6 +54,17 @@ function(install_freeimage_libs config_suffix package_subdir)
     endforeach()
 endfunction()
 
+
+
+# Perform the installation for both Release and Debug libs
+if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
+    install_freeimage_libs("rel" "")
+endif()
+
+if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
+    install_freeimage_libs("dbg" "debug/")
+endif()
+
 if(NOT WIN32 AND NOT APPLE)
     set(RELEASE_SO_FILE "libFreeImage.so.${FREEIMAGE_VERSION_3_DIGIT}")
     
@@ -66,15 +77,6 @@ if(NOT WIN32 AND NOT APPLE)
     if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/${RELEASE_SO_FILE}" AND NOT EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/libFreeImage.so")
         file(CREATE_LINK "${RELEASE_SO_FILE}" "${CURRENT_PACKAGES_DIR}/debug/bin/libFreeImage.so" SYMBOLIC)
     endif()
-endif()
-
-# Perform the installation for both Release and Debug libs
-if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "release")
-    install_freeimage_libs("rel" "")
-endif()
-
-if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
-    install_freeimage_libs("dbg" "debug/")
 endif()
 
 # Perform header install
