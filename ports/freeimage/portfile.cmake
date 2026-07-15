@@ -19,7 +19,7 @@ endif()
 vcpkg_cmake_configure(SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DFREEIMAGE_BUILD_EXAMPLES=NO
-  -FREEIMAGE_BUILD_TESTING=NO)
+  -DFREEIMAGE_BUILD_TESTING=NO)
 
   # We happily use the internal libraries
 
