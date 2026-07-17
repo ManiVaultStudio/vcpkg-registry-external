@@ -31,7 +31,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 vcpkg_cmake_build()
-vcpkg_cmake_config_fixup()
+#vcpkg_cmake_config_fixup()
 
 function(install_freeimage_libs config_suffix package_subdir)
     # Find all static libs, shared libs, and import libs in this build directory
