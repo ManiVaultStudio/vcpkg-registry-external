@@ -121,6 +121,7 @@ jobs:
             "${{ github.workspace }}/.vcpkg/buildtrees/{name}/install-{triplet}-out.log"
       - name: Build tester
         shell: pwsh
+        if: runner.os == 'Windows'
         run: | 
           Set-Location "$env:TEST_WORKDIR"
           cmake --build .\build
