@@ -4,6 +4,15 @@
 
 #include "FreeImage.h"
 
+void FreeImageErrorHandler(FREE_IMAGE_FORMAT fif, const char *message) {
+	printf("\n*** "); 
+	if(fif != FIF_UNKNOWN) {
+		printf("%s Format\n", FreeImage_GetFormatFromFIF(fif));
+	}
+	printf(message);
+	printf(" ***\n");
+  }
+
 int main(int argc, char* argv[]) {
 
   // call this ONLY when linking with FreeImage as a static library
@@ -17,8 +26,6 @@ int main(int argc, char* argv[]) {
 
   // print version & copyright infos
 
-  printf(FreeImage_GetVersion());
-  printf("\n");
-  printf(FreeImage_GetCopyrightMessage());
-  printf("\n");
+  printf("Version: %s \n",FreeImage_GetVersion());
+  printf("Copyright: %s \n",FreeImage_GetCopyrightMessage());
 }
