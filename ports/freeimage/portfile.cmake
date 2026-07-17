@@ -129,6 +129,7 @@ if(EXISTS \"\${CMAKE_CURRENT_LIST_DIR}/../../\${SHARED_LIB}\")
         set_target_properties(freeimage::freeimage PROPERTIES
             IMPORTED_LOCATION_RELEASE \"\${CMAKE_CURRENT_LIST_DIR}/../../\${SHARED_LIB}\"
             IMPORTED_LOCATION_DEBUG \"\${CMAKE_CURRENT_LIST_DIR}/../../debug/\${SHARED_LIB}\"
+            IMPORTED_LOCATION \"\${CMAKE_CURRENT_LIST_DIR}/../../\${SHARED_LIB}\"
             INTERFACE_INCLUDE_DIRECTORIES \"\${CMAKE_CURRENT_LIST_DIR}/../../include\"
         )
     endif()
