@@ -14,7 +14,7 @@
 			"name": "vcpkg-windows",
       "inherits": "vcpkg-base",
 			"cacheVariables": {
-				"VCPKG_TARGET_TRIPLET": "x64-windows-release",
+				"VCPKG_TARGET_TRIPLET": "x64-windows",
 				"CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
 			}
     },
@@ -22,14 +22,14 @@
       "name": "vcpkg-linux",
       "inherits": "vcpkg-base",
       "cacheVariables": {
-          "VCPKG_TARGET_TRIPLET": "x64-linux-release"
+          "VCPKG_TARGET_TRIPLET": "x64-linux"
       }
     },
     {
       "name": "vcpkg-macos",
       "inherits": "vcpkg-base",
       "cacheVariables": {
-          "VCPKG_TARGET_TRIPLET": "arm64-osx-release"
+          "VCPKG_TARGET_TRIPLET": "arm64-osx"
       }
     }
 	]
