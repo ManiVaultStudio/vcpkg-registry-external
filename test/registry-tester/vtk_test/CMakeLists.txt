@@ -5,6 +5,10 @@ project(${PROJECT_NAME})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Map RelWithDebInfo and MinSizeRel to Release vcpkg binaries
+set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release)
+set(CMAKE_MAP_IMPORTED_CONFIG_MINSIZEREL Release)
+
 find_package(VTK COMPONENTS 
     CommonColor
     CommonCore
