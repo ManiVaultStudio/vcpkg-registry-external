@@ -109,7 +109,7 @@ set(FreeImage_VERSION \"${FREEIMAGE_VERSION_3_DIGIT}\")
 
 # Define cross-platform filenames based on your build setup
 if(WIN32)
-    set(SHARED_LIB \"bin/FreeImage.lib\") # Import library for DLL
+    set(SHARED_LIB \"lib/FreeImage.lib\") # Import library for DLL
     set(STATIC_LIB \"lib/FreeImageLib.lib\")
 elseif(APPLE)
     set(SHARED_LIB \"bin/libFreeImage.dylib\")
