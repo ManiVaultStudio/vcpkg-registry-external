@@ -26,7 +26,8 @@ find_package(HDILib COMPONENTS hdidimensionalityreduction hdiutils hdidata CONFI
 add_executable(${PROJECT_NAME} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} PRIVATE 
   ${HDILib_LINK_LIBS}
-  OpenGL::GL)
+  OpenGL::GL
+  kompute::kompute)
 target_include_directories(${PROJECT_NAME} PRIVATE ${HDILib_INCLUDE_DIR})
 # Force the test executable to use the Dynamic CRT (/MD) to match vcpkg
 set_target_properties(${PROJECT_NAME} PROPERTIES
