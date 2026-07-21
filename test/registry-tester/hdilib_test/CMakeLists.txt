@@ -36,11 +36,10 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${HDILib_INCLUDE_DIR})
 set_target_properties(${PROJECT_NAME} PROPERTIES
     MSVC_RUNTIME_LIBRARY "MultiThreadedDLL"
 )
-#  Force Iterator Debug Level to 0 and remove _DEBUG definitions 
-#  so it matches the vcpkg Release library layout perfectly
-target_compile_definitions(registry-tester-hdilib PRIVATE 
-        $<$<CONFIG:Debug>:_ITERATOR_DEBUG_LEVEL=0>
-        $<$<CONFIG:Debug>:NDEBUG>
-    )
+# Unconditionally force MD runtime and IDL=0 — no generator expressions, no per-config branching
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    _ITERATOR_DEBUG_LEVEL=0
+    NDEBUG
+)
 # For fmt - used by kompute for logging
 target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
