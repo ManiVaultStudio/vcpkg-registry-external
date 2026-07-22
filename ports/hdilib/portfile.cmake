@@ -25,13 +25,13 @@ if(VCPKG_TARGET_IS_OSX)
         OUTPUT_VARIABLE HOMEBREW_LIBOMP_PREFIX
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    set(OPENMP_OPTIONS
-        -DOpenMP_C_FLAGS=-I${HOMEBREW_LIBOMP_PREFIX}/include
-        -DOpenMP_CXX_FLAGS=-I${HOMEBREW_LIBOMP_PREFIX}/include
-        -DOpenMP_C_LIB_NAMES=omp
-        -DOpenMP_CXX_LIB_NAMES=omp
-        -DOpenMP_omp_LIBRARY=${HOMEBREW_LIBOMP_PREFIX}/lib/libomp.dylib
-    )
+set(OPENMP_OPTIONS
+    "-DOpenMP_C_FLAGS=-Xpreprocessor -fopenmp -I${HOMEBREW_LIBOMP_PREFIX}/include"
+    "-DOpenMP_CXX_FLAGS=-Xpreprocessor -fopenmp -I${HOMEBREW_LIBOMP_PREFIX}/include"
+    -DOpenMP_C_LIB_NAMES=omp
+    -DOpenMP_CXX_LIB_NAMES=omp
+    -DOpenMP_omp_LIBRARY=${HOMEBREW_LIBOMP_PREFIX}/lib/libomp.dylib
+)
 else()
     set(OPENMP_OPTIONS "")
 endif()
