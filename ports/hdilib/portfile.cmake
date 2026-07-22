@@ -18,6 +18,24 @@ message(STATUS "Found glslangValidator: ${result}")
 vcpkg_add_to_path("${CURRENT_HOST_INSTALLED_DIR}/tools/glslang")
 vcpkg_add_to_path("${CURRENT_HOST_INSTALLED_DIR}/tools/shaderc")
 
+if(VCPKG_TARGET_IS_OSX)
+    # Homebrew libomp does not install to a standard path on macOS
+    execute_process(
+        COMMAND brew --prefix libomp
+        OUTPUT_VARIABLE HOMEBREW_LIBOMP_PREFIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    set(OPENMP_OPTIONS
+        -DOpenMP_C_FLAGS=-I${HOMEBREW_LIBOMP_PREFIX}/include
+        -DOpenMP_CXX_FLAGS=-I${HOMEBREW_LIBOMP_PREFIX}/include
+        -DOpenMP_C_LIB_NAMES=omp
+        -DOpenMP_CXX_LIB_NAMES=omp
+        -DOpenMP_omp_LIBRARY=${HOMEBREW_LIBOMP_PREFIX}/lib/libomp.dylib
+    )
+else()
+    set(OPENMP_OPTIONS "")
+endif()
+
 vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
   -DCMAKE_BUILD_TYPE=Release
@@ -27,6 +45,7 @@ vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   -DFETCHCONTENT_FULLY_DISCONNECTED=OFF
   -DVulkan_GLSLC_EXECUTABLE=${CURRENT_HOST_INSTALLED_DIR}/tools/shaderc/glslc${VCPKG_HOST_EXECUTABLE_SUFFIX}
   -DVulkan_GLSLANG_VALIDATOR_EXECUTABLE=${CURRENT_HOST_INSTALLED_DIR}/tools/glslang/glslangValidator${VCPKG_HOST_EXECUTABLE_SUFFIX}
+  ${OPENMP_OPTIONS}
   )
 
 vcpkg_cmake_install()
