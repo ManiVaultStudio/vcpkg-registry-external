@@ -20,7 +20,7 @@ vcpkg_add_to_path("${CURRENT_HOST_INSTALLED_DIR}/tools/shaderc")
 
 vcpkg_cmake_configure( SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS
-  # -DCMAKE_BUILD_TYPE=Release
+  -DCMAKE_BUILD_TYPE=Release
   -DSUPPORT_LIBS_INSTALL=OFF
   -DENABLE_TESTS=OFF
   -DHDILib_BUILD_TESTS=OFF
