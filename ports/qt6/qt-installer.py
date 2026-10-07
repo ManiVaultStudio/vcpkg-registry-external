@@ -27,7 +27,7 @@
 # It allow the retrieval of exttra packages.
 # Usage example including extra packages:
 #
-# python qli-installer.py 5.12.0 windows desktop --arch win64_msvc2017_64 -p webengine script
+# python qli-installer.py 6.10.3 windows desktop -a win64_msvc2022_64 -p positioning webchannel webengine virtualkeyboard imageformats datavis3d charts networkaut
 #
 #  The code is designed to work in an environment with conan package manage installed
 
