@@ -18,6 +18,14 @@ do not need to do this manually because from DevBindle version 2 the
 
 This registry was created using instructions in the [Microsoft vcpkg doc] (https://learn.microsoft.com/en-us/vcpkg/produce/publish-to-a-git-registry)
 
+#### Updating versions in the registry
+
+Remember to run the version update command :
+
+```shell
+vcpkg.exe --x-builtin-ports-root=./ports --x-builtin-registry-versions-dir=./versions x-add-version --all --verbose --overwrite-version
+``` 
+
 ### SHA512 tip for portfile
 
 Gitven a repo with a tag of the form `vxxx.yyy.zzz.aaa` - in this example FreeImage. The following powershell command can be used to get the GitHub SHA512 for the portfile 
@@ -37,3 +45,4 @@ git rev-parse HEAD:ports/freeimage
 ```
 
 Substitute any other port for freeimage. 
+
