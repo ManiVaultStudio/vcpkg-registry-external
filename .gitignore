@@ -1,2 +1,3 @@
 /test/registry-tester/vcpkg_installed
 __pycache__
+/test/registry-tester/build
