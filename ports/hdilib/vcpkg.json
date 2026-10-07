@@ -1,6 +1,6 @@
 {
   "name": "hdilib",
-  "version": "2.0.1",
+  "version": "dev",
   "description": "A C++ library for high-dimensional embeddings implementing tSNE and HSNE.",
   "dependencies": [
     "flann",

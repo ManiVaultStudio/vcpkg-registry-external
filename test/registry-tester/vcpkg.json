@@ -10,10 +10,6 @@
     { 
       "name": "vtk" 
     },
-    { 
-      "name": "hdilib",
-      "features": [ "kompute" ]
-    },
     {
       "name": "glslang",
       "features": [ "tools" ] ,
