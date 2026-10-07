@@ -8,10 +8,6 @@
       "baseline": "3.19.0.2",
       "port-version": 0
     },
-    "hdilib": {
-      "baseline": "2.0.1",
-      "port-version": 0
-    },
     "kompute": {
       "baseline": "0.10.0-a",
       "port-version": 3
