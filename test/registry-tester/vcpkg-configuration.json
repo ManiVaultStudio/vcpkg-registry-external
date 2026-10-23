@@ -2,7 +2,8 @@
   "default-registry": {
     "kind": "git",
     "repository": "https://github.com/microsoft/vcpkg",
-    "baseline": "56bb2411609227288b70117ead2c47585ba07713"
+    "baseline": "56bb2411609227288b70117ead2c47585ba07713",
+    "$comment": "baseline => registry tag 2026.04.27"
   },
   "registries": [
     {
@@ -10,7 +11,7 @@
       "repository": "https://github.com/ManiVaultStudio/vcpkg-registry-external",
       "baseline": "56e453cba2b3eca237718052a1e3ab58dbf027a5",
       "packages": [
-        "biovault-bfloat16", "hdilib","kompute","qt6", "vtk"
+        "biovault-bfloat16", "hdilib","kompute","qt6", "vtk", "freeimage"
       ]
     }
   ],
