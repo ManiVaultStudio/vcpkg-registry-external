@@ -1,0 +1,17 @@
+diff --git a/Source/ZLibFreeImage/CMakeLists.txt b/Source/ZLibFreeImage/CMakeLists.txt
+index 32ea76a..f3d1b69 100644
+--- a/Source/ZLibFreeImage/CMakeLists.txt
++++ b/Source/ZLibFreeImage/CMakeLists.txt
+@@ -150,7 +150,8 @@ endif(MINGW)
+ add_library(ZLibFreeImage STATIC ${ZLIB_SRCS} ${ZLIB_PUBLIC_HDRS} ${ZLIB_PRIVATE_HDRS})
+ target_include_directories(ZLibFreeImage PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+ 
+-if(UNIX)
+-    # On unix-like platforms the library is almost always called libz
+-   set_target_properties(ZLibFreeImage PROPERTIES OUTPUT_NAME z)
+-endif()
++# Avoid clash with vcpkg sources zlib
++# if(UNIX)
++#     # On unix-like platforms the library is almost always called libz
++#    set_target_properties(ZLibFreeImage PROPERTIES OUTPUT_NAME z)
++# endif()
