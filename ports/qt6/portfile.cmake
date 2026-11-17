@@ -162,7 +162,7 @@ message(STATUS "Using python at ${PYTHON3_EXECUTABLE}")
 #if(NOT pip_result EQUAL 0)
 #  message(FATAL_ERROR "Failed to install Python 'requests' module")
 #endif()
-message(STATUS "Run the qt-installer: version: ${VERSION} platform: ${PLATFORM_NAME} target:  ${TARGET_SELECTED} architecture: ${BUILD_ARCH} ")
+message(STATUS "Run the qt-installer: version: ${VERSION} platform: ${PLATFORM_NAME} target:  ${TARGET_SELECTED} architecture: ${BUILD_ARCH} working dir: ${CURRENT_PACKAGES_DIR}")
 string(REPLACE ";" " " FEATURE_STRING "${SIMPLE_FEATURES}")
 set(ENV{PYTHONDONTWRITEBYTECODE} "1")
 execute_process(
