@@ -162,6 +162,10 @@ def install_archives(archives, archives_url, full_version):
             os.system(f"{seven_zip} x package.7z 1>/dev/null")
 
         os.remove("package.7z")
+        # List the files in the current dir
+        print("Unpacked files in current directory:")
+        x = Path('./')
+        print(list(filter(lambda y:y.is_file(), x.iterdir())))
 
 
 def thin_archives(make_thin):
