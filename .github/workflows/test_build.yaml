@@ -104,9 +104,9 @@ jobs:
           $sevenZip = (Get-Command 7z).Source
           echo "7z at $sevenZip"
           $env:SEVEN_ZIP_EXECUTABLE = $sevenZip
-          $preset = if ($IsWindows) { "vcpkg-windows" }
-            elseif ($IsLinux) { "vcpkg-linux" }
-            else { "vcpkg-macos" }
+          $preset = if ($IsWindows) { "windows-msvc2022-release" }
+            elseif ($IsLinux) { "linux-gcc13-release" }
+            else { "macos-xcode16-release" }
           $buildDir = Join-Path "." "build"
           cmake --trace --preset $preset -S . -B $buildDir  
 
