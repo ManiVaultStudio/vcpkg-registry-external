@@ -165,7 +165,7 @@ def install_archives(archives, archives_url, full_version):
         # List the files in the current dir
         print("Unpacked files in current directory:")
         x = Path('./')
-        print(list(filter(lambda y:y.is_file(), x.iterdir())))
+        print([i.as_posix() for i in x.iterdir()])
 
 
 def thin_archives(make_thin):
