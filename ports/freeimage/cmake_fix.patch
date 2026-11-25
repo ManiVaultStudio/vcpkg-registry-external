@@ -1,0 +1,76 @@
+diff --git a/Source/CMakeLists.txt b/Source/CMakeLists.txt
+index 4e7c8a1..3f784b0 100644
+--- a/Source/CMakeLists.txt
++++ b/Source/CMakeLists.txt
+@@ -34,7 +34,7 @@ set( HEADER_FILES
+ 	FreeImage/J2KHelper.h
+ )
+ 
+-source_group( "Header Files" ${HEADER_FILES} )
++source_group( "Header Files" FILES ${HEADER_FILES} )
+ 
+ set( SOURCE_FILES
+ 	FreeImage/BitmapAccess.cpp
+@@ -47,7 +47,7 @@ set( SOURCE_FILES
+ 	FreeImage/PixelAccess.cpp
+ )
+ 
+-source_group( "Source Files" ${SOURCE_FILES} )
++source_group( "Source Files" FILES ${SOURCE_FILES} )
+ 
+ set( CONVERSION_SOURCE_FILES
+ 	FreeImage/Conversion.cpp
+@@ -72,7 +72,7 @@ set( CONVERSION_SOURCE_FILES
+ 	FreeImage/ToneMapping.cpp
+ )
+ 
+-source_group("Source Files/Conversion" ${CONVERSION_SOURCE_FILES} )
++source_group("Source Files/Conversion" FILES ${CONVERSION_SOURCE_FILES} )
+ 
+ set( METADATA_SOURCE_FILES
+ 	Metadata/Exif.cpp
+@@ -84,7 +84,7 @@ set( METADATA_SOURCE_FILES
+ 	Metadata/XTIFF.cpp	
+ )
+ 
+-source_group( "Source Files/Metadata" ${METADATA_SOURCE_FILES} )
++source_group( "Source Files/Metadata" FILES ${METADATA_SOURCE_FILES} )
+ 
+ set( MULTIPAGING_SOURCE_FILES
+ 	FreeImage/CacheFile.cpp
+@@ -92,7 +92,7 @@ set( MULTIPAGING_SOURCE_FILES
+ 	FreeImage/ZLibInterface.cpp
+ )
+ 
+-source_group( "Source Files/MultiPaging" ${MULTIPAGING_SOURCE_FILES} )
++source_group( "Source Files/MultiPaging" FILES ${MULTIPAGING_SOURCE_FILES} )
+ 
+ set( PLUGINS_SOURCE_FILES 
+ 	FreeImage/J2KHelper.cpp
+@@ -134,7 +134,7 @@ set( PLUGINS_SOURCE_FILES
+ 	FreeImage/TIFFLogLuv.cpp
+ )
+ 
+-source_group( "Source Files/Plugins" ${PLUGINS_SOURCE_FILES} )
++source_group( "Source Files/Plugins" FILES ${PLUGINS_SOURCE_FILES} )
+ 
+ set( QUANTIZERS_SOURCE_FILES
+ 	FreeImage/LFPQuantizer.cpp
+@@ -142,7 +142,7 @@ set( QUANTIZERS_SOURCE_FILES
+ 	FreeImage/WuQuantizer.cpp
+ )
+ 
+-source_group( "Source Files/Quantizers" ${QUANTIZERS_SOURCE_FILES} )
++source_group( "Source Files/Quantizers" FILES ${QUANTIZERS_SOURCE_FILES} )
+ 
+ set( TOOLKIT_FILES
+ 	FreeImageToolkit/Background.cpp
+@@ -161,7 +161,7 @@ set( TOOLKIT_FILES
+ 	FreeImageToolkit/Resize.h
+ )
+ 
+-source_group( "Toolkit Files" ${TOOLKIT_FILES} )
++source_group( "Toolkit Files" FILES ${TOOLKIT_FILES} )
+ 
+ set( ALL_FILES 
+ 	${HEADER_FILES}
